@@ -2,11 +2,13 @@ package org.elkinsm.junit5app.ejemplos.models;
 
 import org.elkinsm.junit5app.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.*;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CuentaTest {
     Cuenta cuenta;
 
@@ -24,6 +26,16 @@ class CuentaTest {
         System.out.println("Finalizando el metodo de prueb");
     }
 
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println("Inicializando el test");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println("Finalizando el test");
+    }
+
     @Test
     @DisplayName("Probando el nombre de la cuenta corriente!")
     void testNombreCuenta() {
@@ -39,7 +51,7 @@ class CuentaTest {
     @Test
     @DisplayName("Probando el saldo de la cuenta correinte, que no sea null , mayor que cero , valor esperado")
     void testSaldoCuenta() {
-        cuenta = new Cuenta("Elkin", new BigDecimal("1000.12345"));
+//        cuenta = new Cuenta("Elkin", new BigDecimal("1000.12345"));
         assertNotNull(cuenta.getSaldo());
         assertEquals(1000.12345, cuenta.getSaldo().doubleValue());
         assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
@@ -157,4 +169,37 @@ class CuentaTest {
         });
     }
 
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void testSoloWindows() {
+
+    }
+
+    @Test
+    @EnabledOnOs({OS.LINUX, OS.MAC})
+    void testSoloLinuxMac() {
+
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void testNoWindows() {
+
+    }
+
+    @Test
+    @EnabledOnJre(JRE.JAVA_8)
+    void soloJdk8() {
+
+    }
+
+    @Test
+    @EnabledOnJre(JRE.JAVA_15)
+    void soloJDK15() {
+    }
+
+    @Test
+    @DisabledOnJre(JRE.JAVA_15)
+    void testNoJdk15() {
+    }
 }
